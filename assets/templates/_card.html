@@ -10,7 +10,10 @@
   <div data-ng-show="card.userCanWrite || !board.p_lock()">
     <div class="cardcontent"
       data-editable-textarea="card.content"
-      data-onbeforesave="checkCardContent($data, column.id, card.id)">
+      data-onbeforesave="checkCardContent($data, column.id, card.id)"
+      e-form="cardform"
+      e-ui-keypress="{13:'cardform.$submit()',esc:'cardform.$hide()'}"
+    >
       <pre data-ng-show="card.content && (card.userCanWrite || board.p_seeContent())">
           {{card.content}}
       </pre>
