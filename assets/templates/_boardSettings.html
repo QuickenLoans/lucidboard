@@ -8,6 +8,9 @@
               Export to CSV
           </a>
       </li>
+    <li data-ng-show="b.id">
+	<a href="mailto:?subject=Invite to {{b.title}} on LucidBoard&body={{b.location}}/boards/{{b.id}}">Email Board Link</a>
+    </li>
     <li>
       <label for="title">Board Title</label>
       <input id="title" type="text" data-ng-model="b.title" placeholder="Title">
