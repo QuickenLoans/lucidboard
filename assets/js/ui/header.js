@@ -5,42 +5,53 @@
 
   .controller('HeaderCtrl', ['$rootScope', '$scope', '$state', '$timeout', '$interval', 'api', 'board',
     function($rootScope, $scope, $state, $timeout, $interval, api, board) {
+      function showBoardNav() {
+        var timer;
 
-      if (!board.loaded()) return;  // No more logic things if there is no board.
+        $scope.board             = board;
+        // $scope.b                 = board.obj();
+        $scope.timerMinutesInput = 5;
+        $scope.timerLeft         = 0;
+        $scope.showTimerForm     = false;
+        $scope.showBoardNav      = true;
 
-      var timer;
+        var startTimer = function(bits) {
+          var sound          = new Audio();
+          sound.src          = '/sounds/ding.mp3';
+          $scope.timerLeft   = bits.seconds;
 
-      $scope.board             = board;
-      // $scope.b                 = board.obj();
-      $scope.timerMinutesInput = 5;
-      $scope.timerLeft         = 0;
-      $scope.showTimerForm     = false;
+          $interval.cancel(timer);
 
-      var startTimer = function(bits) {
-        var sound          = new Audio();
-        sound.src          = '/sounds/ding.mp3';
-        $scope.timerLeft   = bits.seconds;
+          timer = $interval(function() {
+            $scope.timerLeft -= 1;
+            if ($scope.timerLeft <= 0) {
+              $scope.timerLeft = 0;
+              sound.play();
+              $interval.cancel(timer);
+            }
+          }, 1000);
+        };
 
-        $interval.cancel(timer);
+        if (board.timerLeft() > 0) {
+          startTimer({seconds: board.timerLeft()});
+        }
 
-        timer = $interval(function() {
-          $scope.timerLeft -= 1;
-          if ($scope.timerLeft <= 0) {
-            $scope.timerLeft = 0;
-            sound.play();
-            $interval.cancel(timer);
-          }
-        }, 1000);
-      };
-
-      if (board.timerLeft() > 0) {
-        startTimer({seconds: board.timerLeft()});
+        $scope.timerStart = function(minutes) {
+          $scope.showTimerForm = false;
+          api.timerStart(board.id(), minutes * 60);
+        };
       }
 
-      $scope.timerStart = function(minutes) {
-        $scope.showTimerForm = false;
-        api.timerStart(board.id(), minutes * 60);
-      };
+      if($state.current.name === 'board') {
+        showBoardNav();
+      }
 
+      $rootScope.$on('$stateChangeSuccess', function(event, toState) {
+        if(toState.name === 'board') {
+          showBoardNav();
+        } else {
+          $scope.showBoardNav = false;
+        }
+      });
     }]);
 })();

@@ -36,7 +36,7 @@
                     Sign Out
                 </a>
             </li>
-            <li>
+            <li data-ng-if="showBoardNav">
                 <a href="#" data-ng-click="switchTab('trash')" data-ng-class="{dropready:cardDragging, active:currentTab === 'trash'}"
                     data-ui-on-drop="moveSlot($event, $data, board.trash().cardSlots, board.trash().id,
                     board.nextPositionByColumnId(board.trash().id))">
@@ -143,7 +143,7 @@
                 </li>
             </ul>
         </div>
-        <div class="tier">
+        <div data-ng-if="showBoardNav" class="tier">
             <a href="#" class="aside-left" data-ng-click="switchTab('board')" data-ng-class="{active:currentTab === 'board'}">
                 <h1 class="epsilon copy-inverse mbn">
                     {{board.title()}}
