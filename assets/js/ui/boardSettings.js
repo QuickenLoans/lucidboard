@@ -21,7 +21,8 @@
               p_seeVotes:     $scope.board.p_seeVotes(),
               p_seeContent:   $scope.board.p_seeContent(),
               p_combineCards: $scope.board.p_combineCards(),
-              p_lock:         $scope.board.p_lock()
+              p_lock:         $scope.board.p_lock(),
+	      location:       window.location.origin
             };
           } else {
             $scope.b = {
