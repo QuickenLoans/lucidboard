@@ -50,7 +50,11 @@ module.exports = {
 
           res.jsonx(card);
 
+          card.username = user.name;
+
           redis.cardCreated(boardId, card, req);
+
+          meta.getCardLock(boardId, card.id, req);  // creating a card implicitly locks it, too
         });
       });
     });
@@ -93,7 +97,7 @@ module.exports = {
         async.parallel(jobs, function(err, results) {
           if (err) return res.serverError(err);
 
-          meta.releaseCardLock(boardId, cardId, true);
+          meta.releaseCardLock(boardId, cardId, true, true);
 
           res.jsonx(null);
 
@@ -107,7 +111,7 @@ module.exports = {
         Card.update(criteria, bits).populate('votes').exec(function(err, card) {
           if (err) return res.serverError(err);
 
-          meta.releaseCardLock(boardId, cardId, req);
+          meta.releaseCardLock(boardId, cardId, req, true);
 
           res.jsonx(card[0]);
 
@@ -207,7 +211,7 @@ module.exports = {
     util.getCardAndBoard(cardId, boardId, req, res, function(r) {
       if (!r) return;
 
-      var gotLock = meta.getCardLock(boardId, cardId, req);
+      var gotLock = meta.getCardLock(boardId, cardId, req, true);
 
       if (!gotLock) return res.jsonx(false);  // srybro, card is already locked !
 
@@ -224,11 +228,13 @@ module.exports = {
     util.getCardAndBoard(cardId, boardId, req, res, function(r) {
       if (!r) return;
 
-      var successfulRelease = meta.releaseCardLock(boardId, cardId, req);
+      var successfulRelease = meta.releaseCardLock(boardId, cardId, req, true);
 
       if (!successfulRelease) return res.jsonx(false);
 
       res.jsonx(true);
+
+      util.cardVaporizeIfEmpty(boardId, r.card, req);
     });
   },
 

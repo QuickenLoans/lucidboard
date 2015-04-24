@@ -54,7 +54,7 @@ var doUnlockSplices = function(boardId, idx) {
   cardLocks[boardId]['socketIds'].splice(idx, 1);
 };
 
-var getCardLock = function(boardId, cardId, req) {  // true if a lock was successfully obtained
+var getCardLock = function(boardId, cardId, req, doRedis) {  // true if a lock was successfully obtained
   createBoardEntryIfNew(boardId);
 
   if (boardHasCardIdLocked(boardId, cardId))       return false;
@@ -66,14 +66,14 @@ var getCardLock = function(boardId, cardId, req) {  // true if a lock was succes
   cardLocks[boardId]['usernames'].push(req.user.name);
   cardLocks[boardId]['socketIds'].push(req.socket ? req.socket.id : null);
 
-  redis.cardLock(boardId, {id: cardId, username: req.user.name}, req);
+  if (doRedis) redis.cardLock(boardId, {id: cardId, username: req.user.name}, req);
 
   return true;
 };
 
 // reqOrTrue is the request object if we want to only unlock if the req.user
 // had the lock. Set this argument to true to unlock the board/card combo, regardless.
-var releaseCardLock = function(boardId, cardId, reqOrTrue) {   // true if the lock was successfully released
+var releaseCardLock = function(boardId, cardId, reqOrTrue, doRedis) {   // true if the lock was successfully released
   createBoardEntryIfNew(boardId);
 
   // Check that the user actually has a lock on this card.
@@ -85,7 +85,7 @@ var releaseCardLock = function(boardId, cardId, reqOrTrue) {   // true if the lo
 
   doUnlockSplices(boardId, idx);
 
-  redis.cardUnlock(boardId, {id: cardId}, reqOrTrue);
+  if (doRedis) redis.cardUnlock(boardId, {id: cardId}, reqOrTrue);
 
   return true;
 };

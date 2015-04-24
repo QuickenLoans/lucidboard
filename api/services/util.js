@@ -148,6 +148,14 @@ var fixShortid = function(slug) {
   return (String(slug).match(/^([^-]+)-?/))[1];
 };
 
+var cardVaporizeIfEmpty = function(boardId, card, req) {
+  if (!card.content.match(/^\s*$/)) return;
+  Card.destroy({id: card.id}).exec(function(err, done) {
+    if (err) throw err;
+    redis.cardVaporize(boardId, card.id, req);
+  });
+};
+
 module.exports = {
   normalizeCardStack:     normalizeCardStack,
   spliceItem:             spliceItem,
@@ -157,5 +165,6 @@ module.exports = {
   boardIsLegitAndOwnedBy: boardIsLegitAndOwnedBy,
   getCardAndBoard:        getCardAndBoard,
   randomString:           randomString,
-  fixShortid:             fixShortid
+  fixShortid:             fixShortid,
+  cardVaporizeIfEmpty:    cardVaporizeIfEmpty
 };

@@ -52,6 +52,7 @@
           };
 
           $scope.getCardLock = function() {
+            if (board.card(card.id).locked) return;
             api.cardLock(board.id, card.id, function(gotLock) {
               if (gotLock) {
                 board.rememberCardLock(card.id);  // so we can reestablish on websocket reconnect
@@ -109,9 +110,10 @@
         link: function(scope, element) {
 
           // If we were the one who created this card, let's edit it!
-          if (scope.card.openForEditWhenReady) {
+          if (scope.card.you) {
+            board.cardLock(scope.card);
             scope.editform.$show();
-            delete scope.card.openForEditWhenReady;
+            delete scope.card.you;
           }
 
         }

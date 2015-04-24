@@ -10,9 +10,12 @@ setInterval(function() { client.publish('_please_dont_drop_me', '1'); }, 1200000
 
 
 var publish = function(signal, payload, req) {
+  var preserve = ['username'];
 
   if (_.isObject(payload) && !_.isArray(payload)) {
     var obj = {};
+
+    preserve.forEach(function(x) { if (payload[x]) obj[x] = payload[x]; });
 
     Object.keys(payload.toJSON ? payload.toJSON() : payload).forEach(function(k) {
       obj[k] = payload[k];

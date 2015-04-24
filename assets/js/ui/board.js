@@ -14,8 +14,8 @@
         board.columnUpdate(col);
         view.column.setOptionsByBoard(board);
       }).event('card:create:' + board.id, function(card) {
-        if (card.you) card.openForEditWhenReady = true;
         board.cardCreate(card);
+        board.cardLock({username: card.username, you: card.you});
       }).event('card:update:' + board.id, function(card) {
         board.cardUpdate(card);
       }).event('card:upvote:' + board.id, function(vote) {
