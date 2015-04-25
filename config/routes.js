@@ -140,6 +140,12 @@ module.exports.routes = {
     action:     'unlock'
   },
 
+  // Board: Vaporize a card
+  'POST /api/boards/:id/vaporize-card': {
+    controller: 'CardController',
+    action:     'vaporize'
+  },
+
   // Board: Delete
   'DELETE /api/boards/:id': {
     controller: 'BoardController',

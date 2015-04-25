@@ -84,6 +84,7 @@ module.exports = {
     // Create a new redis connection for the new websocket.
     socket.redis = redisModule.createClient();
 
+    // Dumb hack so redis doesn't drop me
     var dropFix = setInterval(function() {
       client.publish('_please_dont_drop_me', '1');
     }, 1200000);

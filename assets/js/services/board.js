@@ -15,6 +15,10 @@
             findIndex: $rootScope.findIndex
           };
 
+      setInterval(function() {
+        console.log('locks', locks);
+      }, 5000);
+
       var cb = function(type, bits) {
         if (typeof eventCb !== 'function') throw 'Must setEventCb()!';
         eventCb(type, bits);
@@ -381,6 +385,27 @@
         },
 
         cardVaporize: function(cardId) {
+          // TODO: i should probably splice out the card to prevent a bit of a memory
+          //       leak? The code that follows needs help.
+          return;
+          maybeDefer(function() {
+            var card    = this.card(cardId),
+                stack   = this.column(card.column).cardSlots,
+                pile    = stack[card.position - 1],
+                pileIdx = _.findIndex(pile, function(c) { return c.id === card.id; });
+
+            console.log('splice', pileIdx, card.position);
+            console.log('and uh', stack, pile);
+            pile.splice(pileIdx, 1);
+            if (pile[pileIdx].length === 0) stack.splice(card.position - 1, 1);
+            console.log('after', stack);
+
+            figureVotesRemaining();
+            countColumnCards();
+          }.bind(this));
+        },
+        /* doesn't account for piles, though...
+        cardVaporize: function(cardId) {
           maybeDefer(function() {
             var card        = this.card(cardId),
                 sourceStack = this.column(card.column).cardSlots;
@@ -391,6 +416,7 @@
             countColumnCards();
           }.bind(this));
         },
+        */
 
         cardLock: function(info) {
           maybeDefer(function() {
@@ -400,9 +426,9 @@
           }.bind(this));
         },
 
-        cardUnlock: function(info) {
+        cardUnlock: function(id) {
           maybeDefer(function() {
-            var card = this.card(info.id);
+            var card = this.card(id);
             card.locked          = false;
             card.lockedByAnother = false;
           }.bind(this));

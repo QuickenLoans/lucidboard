@@ -54,7 +54,8 @@ var doUnlockSplices = function(boardId, idx) {
   cardLocks[boardId]['socketIds'].splice(idx, 1);
 };
 
-var getCardLock = function(boardId, cardId, req, doRedis) {  // true if a lock was successfully obtained
+// true if a lock was successfully obtained
+var getCardLock = function(boardId, cardId, req, doRedis) {
   createBoardEntryIfNew(boardId);
 
   if (boardHasCardIdLocked(boardId, cardId))       return false;
@@ -118,12 +119,22 @@ var cardLockedBySomeoneElse = function(boardId, cardId, req) {
   return actualUserId && actualUserId !== req.user.id;
 };
 
+// So the user closed the application. Let's clean up after them. We need to free any
+// locks they had, and if the card was empty, we'll also vaporize it !
 var unlockAllViaSocketId = function(socketId) {
-  var idx;
   Object.keys(cardLocks).forEach(function(boardId) {
+    var idx;
     while ((idx = cardLocks[boardId]['socketIds'].indexOf(socketId)) !== -1) {
-      redis.cardUnlock(boardId, {id: cardLocks[boardId]['cardIds'][idx]});
+      var cardId = cardLocks[boardId]['cardIds'][idx];
       doUnlockSplices(boardId, idx);
+      Card.findOneById(cardId).exec(function(err, card) {
+        if (err) throw err;
+        if (card.content.match(/^\s*$/)) {
+          util.vaporize(cardId, boardId);
+        } else {
+          redis.cardUnlock(boardId, {id: cardId});
+        }
+      });
     }
   });
 };

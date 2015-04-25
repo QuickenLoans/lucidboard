@@ -85,39 +85,17 @@ module.exports = {
       if (err)                           return res.serverError(err);
       if (r.column.board !== r.board.id) return res.notFound();
 
-      // If the card is in the trash and it is going to be empty, delete it!
-      if (r.column.position === 0 && !content) {
+      var criteria = {id: cardId, column: r.column.id};
 
-        var stack       = util.normalizeCardStack(r.stack),
-            originalMap = util.toCardStackMap(stack),
-            jobs        = util.fixCardPositions(stack, originalMap);
+      Card.update(criteria, bits).populate('votes').exec(function(err, card) {
+        if (err) return res.serverError(err);
 
-        jobs.push(function(cb) { Card.destroy({id: cardId}).exec(cb); });
+        meta.releaseCardLock(boardId, cardId, req);
 
-        async.parallel(jobs, function(err, results) {
-          if (err) return res.serverError(err);
+        res.jsonx(card[0]);
 
-          meta.releaseCardLock(boardId, cardId, true, true);
-
-          res.jsonx(null);
-
-          redis.cardVaporize(boardId, cardId, req);
-        });
-
-      } else {  // Normal card update...
-
-        var criteria = {id: cardId, column: r.column.id};
-
-        Card.update(criteria, bits).populate('votes').exec(function(err, card) {
-          if (err) return res.serverError(err);
-
-          meta.releaseCardLock(boardId, cardId, req, true);
-
-          res.jsonx(card[0]);
-
-          redis.cardUpdated(boardId, card[0], req);
-        });
-      }
+        redis.cardUpdated(boardId, card[0], req);
+      });
 
     })
   },
@@ -208,7 +186,7 @@ module.exports = {
 
     if (!boardId || !cardId) return res.badRequest();
 
-    util.getCardAndBoard(cardId, boardId, req, res, function(r) {
+    util.getCardAndBoard(cardId, boardId, res, function(r) {
       if (!r) return;
 
       var gotLock = meta.getCardLock(boardId, cardId, req, true);
@@ -225,7 +203,7 @@ module.exports = {
 
     if (!boardId || !cardId) return res.badRequest();
 
-    util.getCardAndBoard(cardId, boardId, req, res, function(r) {
+    util.getCardAndBoard(cardId, boardId, res, function(r) {
       if (!r) return;
 
       var successfulRelease = meta.releaseCardLock(boardId, cardId, req, true);
@@ -233,8 +211,19 @@ module.exports = {
       if (!successfulRelease) return res.jsonx(false);
 
       res.jsonx(true);
+    });
+  },
 
-      util.cardVaporizeIfEmpty(boardId, r.card, req);
+  vaporize: function(req, res) {
+    var boardId = parseInt(req.param('id')),
+        cardId  = parseInt(req.param('cardId'));
+
+    if (!boardId || !cardId) return res.badRequest();
+
+    util.vaporize(cardId, boardId, function(err, r) {
+      if (err) return res.serverError();
+
+      return res.jsonx(true);
     });
   },
 

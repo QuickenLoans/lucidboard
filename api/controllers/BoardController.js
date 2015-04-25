@@ -121,8 +121,7 @@ module.exports = {
   },
 
   moveCard: function(req, res) {
-    var boardId           = parseInt(req.param('id')),
-        vaporizingTheCard = false;
+    var boardId = parseInt(req.param('id'));
 
     var p = {
       cardId:       parseInt(req.param('cardId')),
@@ -156,31 +155,35 @@ module.exports = {
 
       var jobs = [], signalData = {}, destStack = util.normalizeCardStack(r.destStack);
 
+      console.log('kk', p.destPosition, destStack.length, destStack);
       if (p.destPosition < 1 || p.destPosition > destStack.length+1) return res.badRequest();
+      console.log('aite');
       if (p.destPosition % 1 !== 0)                                  return res.badRequest();
+      console.log('no');
 
-      // Vaporize card if it is empty and headed for the trash
-      if (!r.card.content && r.destColumn.position === 0) {
+      // // Vaporize card if it is empty and headed for the trash
+      // if (!r.card.content && r.destColumn.position === 0) {
+      //
+      //   var sourceColumn      = r.sourceColumn || r.destColumn,
+      //       sourceStack       = util.normalizeCardStack(r.sourceStack || r.destStack),
+      //       originalSourceMap = util.toCardStackMap(sourceStack),
+      //       card              = util.spliceItem(sourceStack, r.card.id);
+      //
+      //   vaporizingTheCard = true;
+      //
+      //   // Actually delete the card from the db
+      //   jobs.push(function(cb) { Card.destroy({id: card.id}).exec(cb); });
+      //
+      //   // Save resorted source column
+      //   jobs = jobs.concat(util.fixCardPositions(sourceStack, originalSourceMap));
+      //
+      //   // Send specific message event to vaporize this card
+      //   redis.cardVaporize(boardId, card.id);
+      //
+      //   signalData[sourceColumn.id] = util.toCardStackMap(sourceStack);
 
-        var sourceColumn      = r.sourceColumn || r.destColumn,
-            sourceStack       = util.normalizeCardStack(r.sourceStack || r.destStack),
-            originalSourceMap = util.toCardStackMap(sourceStack),
-            card              = util.spliceItem(sourceStack, r.card.id);
-
-        vaporizingTheCard = true;
-
-        // Actually delete the card from the db
-        jobs.push(function(cb) { Card.destroy({id: card.id}).exec(cb); });
-
-        // Save resorted source column
-        jobs = jobs.concat(util.fixCardPositions(sourceStack, originalSourceMap));
-
-        // Send specific message event to vaporize this card
-        redis.cardVaporize(boardId, card.id);
-
-        signalData[sourceColumn.id] = util.toCardStackMap(sourceStack);
-
-      } else if (r.sourceStack === null) {  // source and dest stack are the same
+      // } else if (r.sourceStack === null) {  // source and dest stack are the same
+      if (r.sourceStack === null) {  // source and dest stack are the same
 
         var destStack       = util.normalizeCardStack(r.destStack),
             originalDestMap = util.toCardStackMap(destStack),
@@ -224,7 +227,7 @@ module.exports = {
       async.parallel(jobs, function(err, results) {
         if (err) return res.serverError(err);
 
-        if (vaporizingTheCard) meta.releaseCardLock(boardId, card.id, true);
+        meta.releaseCardLock(boardId, card.id, true);
 
         res.jsonx(signalData);
 

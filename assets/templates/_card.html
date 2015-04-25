@@ -7,20 +7,24 @@
      data-drag-channel="card"
      data-drop-channel="card"
      data-ui-on-drop="combineThings($event, $data, card.id)">
-     <div data-ng-show="(card.userCanWrite || !board.locked) && !card.lockedByAnother">
+     <div data-ng-show="
+       (!board.hasCardLocks || (card.locked && !card.lockedByAnother))
+         && (card.userCanWrite || !board.locked)
+         && !card.lockedByAnother"
+       >
          <div class="cardcontent"
              data-e-form="editform"
-             data-ng-click="editorShow()"
-             data-ng-hide="isEditorVisible()"
+             data-ng-click="editorShow(card)"
+             data-ng-hide="isEditorVisible(card)"
              data-editable-textarea="card.content"
              data-blur="ignore"
-             data-onshow="getCardLock()"
-             data-onhide="endCardLock()"
-             data-onbeforesave="checkCardContent($data, column.id, card.id)"
+             data-onshow="getCardLock(card)"
+             data-onbeforesave="checkCardContent(card, $data, column.id, card.id)"
+             data-oncancel="cancel(card)"
              data-ng-disabled="true"
              >
              <pre data-ng-show="card.content && (card.userCanWrite || board.p_seeContent)">
-{{card.content}}
+({{card.id}}, {{card.position}}){{card.content}}
             </pre>
             <pre data-ng-show="card.content && !card.userCanWrite && !board.p_seeContent">
 {{card.content | obfuscated}}
@@ -31,15 +35,15 @@ Enter note...
         </div>
         <a href="#"
           class="card-remove"
-          data-ng-show="isEditorVisible() && column.position !== 0"
-          data-ng-click="moveTo(board.trash, true)"
+          data-ng-show="isEditorVisible(card) && column.position !== 0"
+          data-ng-click="trash(card)"
           >
             <svg class="icon-alert" fill="#ffffff">
                 <desc>Delete Icon</desc>
                 <use xlink:href="#cancel-circle"></use>
             </svg>
         </a>
-        <div data-ng-hide="isEditorVisible()" class="handle aside-right">
+        <div data-ng-hide="isEditorVisible(card)" class="handle aside-right">
             <a href="#" data-ng-click="view.cardMenu.switch(card.id, $event)">
                 <svg class="icon-standard">
                     <desc>Card menu toggle icon</desc>
@@ -48,7 +52,7 @@ Enter note...
             </a>
         </div>
         <div class="handle aside-left"
-          data-ng-show="!isEditorVisible() && board.votesEnabled">
+          data-ng-show="!isEditorVisible(card) && board.votesEnabled">
             <a href="#" data-ng-click="upvote($event)" data-ng-class="{'font--brand-color': false}">
                 <svg class="icon-standard aside-left" data-ng-class="{'animate-pop': votePop}">
                     <desc>Card upvote icon</desc>
@@ -65,28 +69,28 @@ Enter note...
         <div class="card-menu" data-ng-show="view.cardMenu.current === card.id">
             <ul class="card-menu-items" role="menu">
                 <li data-ng-show="card.myVoteCount">
-                    <a href="#" data-ng-click="unupvote()">Undo vote</a>
+                    <a href="#" data-ng-click="unupvote(card)">Undo vote</a>
                 </li>
                 <li>
                     Card Color
                     <ul class="x-list" role="menu">
                         <li>
-                            <a href="#" class="sea swatch" data-ng-click="color('sea')"></a>
+                            <a href="#" class="sea swatch" data-ng-click="color(card, 'sea')"></a>
                         </li>
                         <li>
-                            <a href="#" class="brick swatch" data-ng-click="color('brick')"></a>
+                            <a href="#" class="brick swatch" data-ng-click="color(card, 'brick')"></a>
                         </li>
                         <li>
-                            <a href="#" class="ice swatch" data-ng-click="color('ice')"></a>
+                            <a href="#" class="ice swatch" data-ng-click="color(card, 'ice')"></a>
                         </li>
                         <li>
-                            <a href="#" class="gold-money swatch" data-ng-click="color('gold-money')"></a>
+                            <a href="#" class="gold-money swatch" data-ng-click="color(card, 'gold-money')"></a>
                         </li>
                         <li>
-                            <a href="#" class="eggplant swatch" data-ng-click="color('eggplant')"></a>
+                            <a href="#" class="eggplant swatch" data-ng-click="color(card, 'eggplant')"></a>
                         </li>
                         <li>
-                            <a href="#" class="default swatch" data-ng-click="color('default')"></a>
+                            <a href="#" class="default swatch" data-ng-click="color(card, 'default')"></a>
                         </li>
                     </ul>
                 </li>
@@ -95,7 +99,7 @@ Enter note...
                     <div data-ng-repeat="col in board.columns">
                         <a class="pointer" role="menuitem" tabindex="1"
                           data-ng-show="col.title !== column.title && col.position !== 0"
-                          data-ng-click="moveTo(col)" href="#"
+                          data-ng-click="moveTo(card, col)" href="#"
                           >
                             {{col.title}}
                         </a>
@@ -104,7 +108,11 @@ Enter note...
             </ul>
         </div>
     </div>
-    <div data-ng-show="!card.userCanWrite && board.locked && !card.lockedByAnother">
+    <div data-ng-hide="
+       (!board.hasCardLocks || (card.locked && !card.lockedByAnother))
+         && (card.userCanWrite || !board.locked)
+         && !card.lockedByAnother"
+         >
         <div class="cardcontent">
             <pre data-ng-show="card.content && (card.userCanWrite || board.p_seeContent)">
 {{card.content}}
@@ -117,7 +125,7 @@ Empty
             </pre>
         </div>
         <div class="handle aside-left"
-          data-ng-show="!isEditorVisible() && board.votesEnabled">
+          data-ng-show="!isEditorVisible(card) && board.votesEnabled">
             <a href="#" data-ng-class="{'font--brand-color': false}">
                 <svg class="icon-standard aside-left" data-ng-class="{'animate-pop': votePop}">
                     <desc>Card upvote icon</desc>

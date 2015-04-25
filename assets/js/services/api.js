@@ -204,6 +204,9 @@
         cardUnlock: function(boardId, cardId, cb) {
           post('/api/boards/' + boardId + '/unlock-card', {cardId: cardId}, cb);
         },
+        cardVaporize: function(boardId, cardId, cb) {
+          post('/api/boards/' + boardId + '/vaporize-card', {cardId: cardId}, cb);
+        },
         timerStart: function(boardId, seconds, cb) {
           post('/api/boards/' + boardId + '/timer-start', {seconds: seconds}, cb);
         },
@@ -227,9 +230,13 @@
         off:         function(event, fn)  { $sails.off(event, fn); },
         hook:        function(event, scope, fn) {
           var that = this;
-          that.on(event, fn);
+          var myFn = function(data) {
+            console.log('-->', event + ':', data);
+            fn.apply(fn, arguments);
+          };
+          that.on(event, myFn);
           scope.$on('$destroy', function() {
-            that.off(event, fn);
+            that.off(event, myFn);
           });
         }
       };
