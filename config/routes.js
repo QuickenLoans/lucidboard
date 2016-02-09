@@ -122,6 +122,12 @@ module.exports.routes = {
     action:     'sortByVotes'
   },
 
+  // Board: Wipe Board
+  'POST /api/boards/:id/wipe-board': {
+    controller: 'BoardController',
+    action:     'wipeBoard'
+  },
+
   // Board: Pause timer
   'POST /api/boards/:id/timer-pause': {
     controller: 'BoardController',

@@ -111,6 +111,11 @@
                         Email Board
                     </a>
                 </li>
+                <li data-ng-if="board.isFacilitator">
+                    <a href="#" data-ng-click="wipeBoard();">
+                        Wipe Board
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

@@ -584,6 +584,12 @@
           }.bind(this));
 
           return ret;
+        },
+
+        wipe: function() {
+          board.columns.forEach(function(col) {
+            col.cardSlots = [];
+          });
         }
       };
 

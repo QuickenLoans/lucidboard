@@ -64,15 +64,15 @@ module.exports = {
     }
   },
 
-  beforeDestroy: function(criteria, cb) {
-    if (!criteria.where) {
-      return cb('Where criteria expected!');  // i don't know what i'm doing
-    }
-
-    Card.find(criteria.where).exec(function(err, cards) {
-      if (err) return cb(err);
-      Vote.destroy({card: _.pluck(cards, 'id')}).exec(cb);
-    })
-  }
+  // beforeDestroy: function(criteria, cb) {
+  //   if (!criteria.where) {
+  //     return cb('Where criteria expected!');  // protecting against Waterline bugs
+  //   }
+  //
+  //   Card.find(criteria.where).exec(function(err, cards) {
+  //     if (err) return cb(err);
+  //     Vote.destroy({card: _.pluck(cards, 'id')}, cb);
+  //   })
+  // }
 
 };

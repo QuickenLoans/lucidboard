@@ -27,6 +27,12 @@
         api.boardSortByVotes(board.id);
       };
 
+      $scope.wipeBoard = function() {
+        if (confirm("This will drop all cards on the board and in the trash.\n\nAre you sure?")) {
+          api.boardWipe(board.id);
+        }
+      };
+
       $scope.goFullScreen = function() {
         var element = document.documentElement;
         if (element.requestFullscreen) {

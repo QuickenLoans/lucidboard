@@ -165,6 +165,9 @@
         boardSortByVotes: function(boardId, cb) {
           post('/api/boards/' + boardId + '/sort-by-votes', {}, cb);
         },
+        boardWipe: function(boardId, cb) {
+          post('/api/boards/' + boardId + '/wipe-board', {}, cb);
+        },
         columnCreate: function(boardId, bits, cb) {
           post('/api/boards/' + boardId + '/columns', bits, cb);
         },

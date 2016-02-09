@@ -35,6 +35,7 @@ var publish = function(signal, payload, req) {
 
 module.exports = {
   boardCreated:      function(board, r)           { publish('board:create', board, r); },
+  boardWipe:         function(boardId, r)         { publish('board:wipe:' + boardId, {}, r); },
   boardMoveCards:    function(boardId, info, r)   { publish('board:moveCards:' + boardId, info, r); },
   boardMoveColumns:  function(boardId, info, r)   { publish('board:moveColumns:' + boardId, info, r); },
   boardCombineCards: function(boardId, info, r)   { publish('board:combineCards:' + boardId, info, r); },

@@ -653,6 +653,44 @@ module.exports = {
     });
   },
 
+  wipeBoard: function(req, res) {
+    var boardId = parseInt(req.param('id'));
+
+    if (!boardId) return res.badRequest();
+
+    async.auto({
+      board: function(cb) { Board.findOneById(boardId).exec(cb); },
+      columns: ['board', function(cb, r) {
+        Column.find({board: r.board.id}).sort({position: 'asc'}).exec(cb);
+      }],
+      rawCards: ['columns', function(cb, r) {
+        async.parallel(r.columns.map(function(col) {
+          return function(_cb) {
+            Card.find({column: col.id}).sort({position: 'asc'}).exec(_cb);
+          };
+        }), cb);
+      }]
+    }, function(err, r) {
+      if (err)                    return res.serverError(err);
+      if (!r.board || !r.columns) return res.badRequest();
+
+      var jobs = [];
+
+      _.flatten(r.rawCards).forEach(function(card) {
+        console.log('destroying', card);
+        jobs.push(function(cb) { Card.destroy({id: card.id}, cb); });
+      });
+
+      console.log('jobs', jobs.length);
+
+      async.parallel(jobs, function(err, results) {
+        if (err) return res.serverError(err);
+        res.jsonx(true);
+        redis.boardWipe(boardId);
+      });
+    });
+  },
+
   timerPause: function(req, res) {
     var boardId = parseInt(req.param('id')),
         seconds = parseInt(req.param('seconds'));
