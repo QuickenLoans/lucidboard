@@ -7,7 +7,7 @@
     {{board.timer.remaining | secondsToMinutes}}
 
     <span data-ng-show="showForm">
-        <input class="text-input mlm" type="text" size="4" data-ng-model="view.timer.input" data-ng-click="preventDefault($event)">
+        <input class="mlm" type="text" size="4" data-ng-model="view.timer.input" data-ng-click="preventDefault($event)">
 
         <span class="btn--secondary btn--secondary--bright mlm" data-ng-show="view.timer.showStart" data-ng-click="timerStart($event, view.timer.input); clockPop = !clockPop">
             Start
