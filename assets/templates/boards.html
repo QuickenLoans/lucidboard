@@ -24,8 +24,8 @@
                       Show Active
                   </label>
               </li>
-              <li>
-                  <label for="type-archived" data-ng-show="archivedBoardsExist" class="mls mrm">
+              <li data-ng-show="archivedBoardsExist">
+                  <label for="type-archived" class="mls mrm">
                       <input id="type-archived" type="radio" name="type" value="archived" data-ng-model="type"
                         data-ng-show="archivedBoardsExist">
                       Show Archived
