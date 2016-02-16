@@ -501,6 +501,7 @@ input[type="search"]::-webkit-search-decoration {
 // www.sitepen.com/blog/2008/05/14/the-devils-in-the-details-fixing-dojos-toolbar-buttons/
 
 button, input {
+    border: 0;
     &::-moz-focus-inner {
         border: 0;
         padding: 0;

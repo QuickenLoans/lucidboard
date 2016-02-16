@@ -1,16 +1,16 @@
 .btn {
-    font-family: $font-heading;
-    color: $white;
-    outline: 0;
-    cursor: pointer;
-    display: inline-block;
     background-color: $flamingo;
     border-radius: 0.15em;
-    border: none;
+    color: $white;
+    cursor: pointer;
+    display: inline-block;
+    font-family: $font-heading;
+    outline: 0;
     padding: 0.5em 1em;
-    transition: background 500ms;
     text-align: center;
     text-decoration: none;
+    transition: background 500ms;
+
     &:hover, &:active, &:focus {
         background: darken($flamingo, 5%);
         color: $white;
@@ -18,27 +18,28 @@
     }
 }
 
-// Currently used on timer btns
-.outline {
-    border: 0.15em solid $white;
-    padding: 0.25em;
+.btn--secondary {
+    background-color: transparent;
+    border: 0.0625em solid;
+    padding: 0.25em 0.75em;
 }
 
-.btn--muted {
-    background-color: $storm;
+// dull brand color secondary btn
+.btn--secondary--dull {
+    border-color: $oxford;
+    color: $oxford;
+
     &:hover, &:active, &:focus {
-        background-color: $storm;
-        color: $white;
-        text-decoration: none;
+        background: $oxford;
     }
 }
 
-.btn--card {
-    border: 0.0625em solid $oxford;
-    background-color: $summit;
-    color: $oxford;
-    padding: 0.25em 0.75em;
+// bright brand color secondary btn
+.btn--secondary--bright {
+    border-color: $white;
+
     &:hover, &:active, &:focus {
-        background: $oxford;
+        background: $white;
+        color: $flamingo;
     }
 }

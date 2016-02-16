@@ -1,19 +1,24 @@
 <div>
-  <svg class="aside-left icon-standard" fill="#ffffff" data-ng-class="{'animate-pop': view.timer.clockPop}">
-    <desc>Board Clock Timer Icon</desc>
-    <use xlink:href="#clock"></use>
-  </svg>
-  {{board.timer.remaining | secondsToMinutes}}
-  <span data-ng-show="showForm">
-    <input class="text-input-clear mlm" type="text" size="4" data-ng-model="view.timer.input" data-ng-click="preventDefault($event)">
-    <span class="outline mlm" data-ng-show="view.timer.showStart" data-ng-click="timerStart($event, view.timer.input); clockPop = !clockPop">
-      Start
+    <svg class="icon-standard" fill="#ffffff" data-ng-class="{'animate-pop': view.timer.clockPop}">
+        <desc>Alarm Clock Icon</desc>
+        <use xlink:href="#clock"></use>
+    </svg>
+
+    {{board.timer.remaining | secondsToMinutes}}
+
+    <span data-ng-show="showForm">
+        <input class="text-input mlm" type="text" size="4" data-ng-model="view.timer.input" data-ng-click="preventDefault($event)">
+
+        <span class="btn--secondary btn--secondary--bright mlm" data-ng-show="view.timer.showStart" data-ng-click="timerStart($event, view.timer.input); clockPop = !clockPop">
+            Start
+        </span>
+
+        <span href="#" class="btn--secondary btn--secondary--bright mlm" data-ng-show="!view.timer.showStart" data-ng-click="timerPause($event); clockPop = !clockPop">
+            Pause
+        </span>
+
+        <span href="#" class="btn--secondary btn--secondary--bright mlm" data-ng-click="timerReset($event); clockPop = !clockPop">
+            Reset
+        </span>
     </span>
-    <span href="#" class="outline mlm" data-ng-show="!view.timer.showStart" data-ng-click="timerPause($event); clockPop = !clockPop">
-      Pause
-    </span>
-    <span href="#" class="outline mlm" data-ng-click="timerReset($event); clockPop = !clockPop">
-      Reset
-    </span>
-  </span>
 </div>
