@@ -5,63 +5,16 @@
     }
 }
 
-// Closes an open piece of content
-@keyframes close-slide-left {
-    100% {
-        transform: translateX(-100%);
-    }
-}
-
-// Slides piece down
-@keyframes slide-down {
-    0% {
-        transform: translateY(-90%);
-    }
-}
-
-// Slides piece down
-@keyframes slide-up {
-    0% {
-        transform: translateY(100%);
-    }
-}
-
-// Slides piece down
-@keyframes slide-up {
-    0% {
-        transform: translateY(100%);
-    }
-}
-
 @keyframes pop {
     100% {
         transform: scale(1.25);
     }
 }
 
-// These classes are used for dynamic elements
-.animate-close-slide-left {
-    animation-name: close-slide-left;
-    animation-duration: 400ms;
-    animation-timing-function: ease-out;
-}
-
 .animate-slide-right {
     animation-name: slide-right;
     animation-duration: 400ms;
     animation-timing-function: ease-out;
-}
-
-.animate-slide-down {
-    animation-name: slide-down;
-    animation-duration: 400ms;
-    animation-timing-function: ease-in-out;
-}
-
-.animate-slide-up {
-    animation-name: slide-up;
-    animation-duration: 400ms;
-    animation-timing-function: ease-in-out;
 }
 
 .animate-pop {
