@@ -14,7 +14,8 @@
         border: 0.125em solid $alto;
         border-radius: 0.3125em;
         box-sizing: border-box;
-        &:focus, &:active, &:hover {
+        transition: background 500ms;
+        &:focus, &:active {
             border: 0.125em solid $fiord;
             background: lighten($fiord, 50%);
         }
@@ -29,7 +30,7 @@
 }
 
 // space out all checkboxes from copy
-input[type="checkbox"] {
+input[type="checkbox"], input[type="radio"] {
     margin-right: 0.5em;
 }
 
