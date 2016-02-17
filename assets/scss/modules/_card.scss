@@ -2,107 +2,61 @@
 // remove the plugin styles
 .card {
     @include clearfix;
-    cursor: grab;
-    border-radius: 0.15em;
-    font-weight: bold;
-    width: 100%;
-    position: relative;
-    textarea {
-        margin-left: 0.5em;
-        margin-top: 0.5em;
-    }
-    .attached-cards {
-        float: left;
-        background-color: $font-body-color;
-        color: white;
-        border-radius: 0.15em;
-        font-weight: bold;
-        font-size: 0.5em;
-        padding: 0.1875em;
-        width: 2em;
-        text-align: center;
-    }
-    .cardcontent pre {
-        font-family: $font-body;
-        margin: 0;
-        padding: 1em;
-        font-style: normal;
-        border-bottom: 0.0625em solid $storm;
-    }
-    &:active {
-        cursor: grabbing;
-    }
-}
 
-.card--locked {
-    padding: 1.5em;
-    .icon-standard {
-        width: 4em;
-        height: 4em;
-        display: block;
-        margin: 0 auto;
-    }
-}
-
-.card-remove {
-    position: absolute;
-    bottom: 0.3125em;
-    right: 0.3125em;
-}
-
-.card.on-drag-hover {
-    border: 0.125em dashed $alto;
-}
-
-.cardjunction {
-     height: 1em;
-     transition: all 0.2s ease-in-out;
-     &.on-drag-hover {
-        height: 7em;
-        border-radius: 0.15em;
-        border: 0.125em dashed $storm;
-        margin-top: 0.375em;
-        margin-bottom: 0.375em;
-     }
-     .active {
-        background-color: $summit;
-     }
-}
-
-.slate-card {
     background-color: $summit;
-    transition: background-color 0.2s ease-in-out;
     border: {
         top: 0.0625em solid $storm;
         right: 0.0625em solid $storm;
         left: 0.4em solid $storm;
         bottom: 0.0625em solid $storm;
     }
+    border-radius: 0.15em;
+    cursor: grab;
+    font-weight: bold;
+    position: relative;
+    transition: background-color 0.2s ease-in-out;
+    width: 100%;
     &:hover {
         background-color: darken($summit, 5%);
     }
     &.locked {
         background-color: $detroit;
     }
+    &:active {
+        cursor: grabbing;
+    }
 }
 
-.card-menu {
-    background-color: darken($summit, 5%);
-    font-size: 0.8em;
-    @include span(12 of 12 omega);
+// textarea gets added by plugin, todo: figure out how to add a class to textarea instead of this
+.card textarea, .card .cardcontent pre {
+    padding: 0.5em;
+}
+
+// the original state of the card is a "pre" element, again this is not desirable and because of the plugin
+.card .cardcontent pre {
+    font-family: $font-body;
+    margin: 0;
+    border-bottom: 0.0625em solid $storm;
+}
+
+.card__menu {
     @include clearfix;
+    @include span(12 of 12 omega);
+
+    background-color: darken($summit, 5%);
+    border-top: 0.2em solid $storm;
+    font-size: 0.8em;
     &:hover {
         cursor: default;
     }
 }
 
-.card-menu__items {
+.card__menu__items {
     list-style-type: none;
     padding: 0;
     margin-left: 0.5em;
     li {
         padding: 0.5em 0;
-        border-bottom: 0.0625em solid $cloudy-day;
         a {
             display: inline-block;
             padding: 0.5em;
@@ -116,6 +70,32 @@
         padding: 0;
         margin-top: 0.5em;
         margin-left: 0.5em;
+    }
+}
+
+.card--locked {
+    padding: 1.5em;
+    .icon-standard {
+        width: 4em;
+        height: 4em;
+        display: block;
+        margin: 0 auto;
+    }
+}
+
+.cardjunction {
+    height: 1em;
+    transition: all 0.2s ease-in-out;
+    &.on-drag-hover {
+        background-color: darken($summit, 10%);
+        border-radius: 0.15em;
+        border: 0.0625em solid $storm;
+        height: 7em;
+        margin-top: 1em;
+        margin-bottom: 1em;
+    }
+    .active {
+        background-color: $summit;
     }
 }
 

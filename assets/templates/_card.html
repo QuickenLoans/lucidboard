@@ -1,6 +1,10 @@
 <div
      class="card slate-card {{card.color || 'default'}}"
      data-ui-draggable="{{board.locks.length === 0 && !board.locked}}"
+     <!--
+     class="card {{card.color || 'default'}}"
+     data-ui-draggable="isDraggable(board)"
+     -->
      data-drag="card"
      data-drag-channel="card"
      data-drop-channel="card"
@@ -47,8 +51,8 @@ Enter note...
                 </span>
             </a>
         </div>
-        <div class="card-menu" data-ng-show="view.cardMenu.current === card.id">
-            <ul class="card-menu__items" role="menu">
+        <div class="card__menu" data-ng-show="view.cardMenu.current === card.id">
+            <ul class="card__menu__items" role="menu">
                 <li data-ng-show="card.myVoteCount">
                     <a href="#" data-ng-click="unupvote(card)">Undo vote</a>
                 </li>
