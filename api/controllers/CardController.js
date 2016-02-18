@@ -18,6 +18,20 @@ var getNextCardPosition = function(columnId, cb) {
   });
 };
 
+var getNextCardPosition2 = function(columnId, cb) {
+  util.nativeFindStack(columnId, function(err, stack) {
+    if (err) return cb(err);
+
+    var max = 0;
+
+    stack.forEach(function(c) {
+      if (c.position > max) max = c.position;
+    });
+
+    cb(null, max + 1);
+  });
+};
+
 module.exports = {
 
   create: function(req, res) {
@@ -29,13 +43,17 @@ module.exports = {
     if (!boardId || !columnId) return res.badRequest();
 
     async.auto({
-      board:  function(cb) { Board.findOneById(boardId).exec(cb); },
-      column: function(cb) { Column.findOneById(columnId).exec(cb); }
+      board:  function(cb) { 
+        util.nativeFind('board', boardId, cb);
+      },
+      column: function(cb) { 
+        util.nativeFind('column', columnId, cb);
+      }
     }, function(err, r) {
       if (err)                           return res.serverError(err);
       if (r.column.board !== r.board.id) return res.notFound();
 
-      getNextCardPosition(columnId, function(err, nextpos) {
+      getNextCardPosition2(columnId, function(err, nextpos) {
         if (err) return res.serverError(err);
 
         var attributes = {
@@ -47,7 +65,6 @@ module.exports = {
 
         Card.create(attributes, function(err, card) {
           if (err) return res.serverError(err);
-
           res.jsonx(card);
 
           card.username = user.name;

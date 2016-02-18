@@ -98,6 +98,20 @@ var fixColumnPositions = function(stack, origMap) {
   return jobs;
 };
 
+var sortByKey = function(items, key) {
+  items.sort(function (a, b) {
+    if (a[key] > b[key]) {
+      return 1;
+    }
+    if (a[key] < b[key]) {
+      return -1;
+    }
+    return 0;
+  });
+
+  return items;
+}
+
 
 // If there is no board passed to the callback, you can assume we've already handled res.
 var boardIsLegitAndOwnedBy = function(id, req, res, cb) {
@@ -199,24 +213,80 @@ var nativeFind = function(type, id, cb) {
     if (err) {
       console.log('Error!');
     } else {
-      connection.get('waterline:' + type + ':id:' + id, function(a, b) {
-        cb(a, JSON.parse(b)); 
+      connection.get('waterline:' + type + ':id:' + id, function(err, value) {
+        cb(err, JSON.parse(value)); 
       });
     }
   });
-}
+};
+
+// NOTE: Not used currently
+var nativeScan = function (cb) {
+  function scan(start) {
+    connection.scan(start, function (err, result) {
+      var cursor = parseInt(result[0]), keys = result[1];
+      cb(keys);
+
+      if (cursor === 0) {
+        return;
+      }
+
+      scan(cursor);
+    });
+  }
+
+  scan(0);
+};
 
 var nativeFindStack = function(columnId, cb) {
   Column.native(function(err, connection) {
     if (err) {
       console.log('Error!');
-    } else {
-      connection.get('waterline:card:id:' + columnId, function(a, b) {
-        cb(a, JSON.parse(b)); 
-      });
+      return;
     }
+
+    connection.keys('waterline:card:id:*', function(err, results) {
+      var stack = [];
+
+      results.forEach(function (key, index) {
+        connection.get(key, function(err, result) {
+          var obj = JSON.parse(result);
+          if (obj.column === columnId) {
+            stack.push(obj);
+          }
+
+          if (index === results.length - 1) { 
+            cb(err, stack);
+          }
+        });
+      });
+    });
   });
-}
+};
+
+var nativeSaveStacks = function(stacks, cb) {
+  if (!stacks || !stacks.length) {
+    cb();
+    return;
+  }
+ 
+  Column.native(function(err, connection) {
+    if (err) {
+      console.log('Error!');
+      return;
+    }
+
+    stacks.forEach(function(stack, stacksIndex) {
+      stack.forEach(function(card, stackIndex) {
+        nativeSet('card', card.id, card, function (err, result) {
+          if (stackIndex === stack.length - 1 && stacksIndex === stacks.length - 1) {
+            cb(err);
+          }
+        }); 
+      });
+    });
+  });
+};
 
 var nativeSet = function(type, id, value, cb) {
   Column.native(function(err, connection) {
@@ -226,13 +296,33 @@ var nativeSet = function(type, id, value, cb) {
       connection.set('waterline:' + type + ':id:' + id, JSON.stringify(value), cb); 
     }
   });
-}
+};
+
+// Fix position settings for all cards in the collection.
+var fixCardPositions2 = function(stack, origMap) {
+  var i, j, jobs = [];
+
+  for (i=0; i<stack.length; i++) {
+    for (j=0; j<stack[i].length; j++) {
+      if (!origMap[i] || !origMap[i][j] || origMap[i][j] !== stack[i][j].id) {
+        (function() {
+          var toSave = stack[i][j];
+          toSave.position = i + 1;
+        })();
+      }
+    }
+  }
+
+  return jobs;
+};
+
 
 module.exports = {
   normalizeCardStack:     normalizeCardStack,
   spliceItem:             spliceItem,
   toCardStackMap:         toCardStackMap,
   fixCardPositions:       fixCardPositions,
+  fixCardPositions2:      fixCardPositions2, 
   fixColumnPositions:     fixColumnPositions,
   boardIsLegitAndOwnedBy: boardIsLegitAndOwnedBy,
   getCardAndBoard:        getCardAndBoard,
@@ -241,5 +331,7 @@ module.exports = {
   vaporize:               vaporize,
   nativeSet:              nativeSet,
   nativeFind:             nativeFind,
-  nativeFindStack:        nativeFindStack
+  nativeFindStack:        nativeFindStack,
+  nativeSaveStacks:       nativeSaveStacks,
+  sortByKey:              sortByKey
 };

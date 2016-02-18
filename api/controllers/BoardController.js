@@ -134,18 +134,26 @@ module.exports = {
     async.auto({
       card:  function(cb) { Card.findOneById(p.cardId).exec(cb); },
       destColumn: function(cb) {
-        Column.findOne({board: boardId, id: p.destColumnId}).exec(cb);
+        //Column.findOne({board: boardId, id: p.destColumnId}).exec(cb);
+        util.nativeFind('column', p.destColumnId, cb);
       },
       destStack: function(cb) {
-        Card.find({column: p.destColumnId}).sort({position: 'asc'}).exec(cb);
+        util.nativeFindStack(p.destColumnId, function (err, result) {
+          cb(err, util.sortByKey(result, 'position'));
+        });
+        //Card.find({column: p.destColumnId}).sort({position: 'asc'}).exec(cb);
       },
       sourceColumn: ['card', function(cb, r) {
         if (r.card.column === p.destColumnId) return cb(null, null);  // we already got this!
-        Column.findOne({board: boardId, id: r.card.column}).exec(cb);
+        //Column.findOne({board: boardId, id: r.card.column}).exec(cb);
+        util.nativeFind('column', r.card.column, cb);
       }],
       sourceStack: ['card', function(cb, r) {
         if (r.card.column === p.destColumnId) return cb(null, null);  // we already got this!
-        Card.find({column: r.card.column}).sort({position: 'asc'}).exec(cb);
+        util.nativeFindStack(r.card.column, function(err, result) {
+          cb(err, util.sortByKey(result, 'position'));
+        });
+        //Card.find({column: r.card.column}).sort({position: 'asc'}).exec(cb);
       }]
     }, function(err, r) {
       if (err)                                                       return res.serverError(err);
@@ -194,7 +202,7 @@ module.exports = {
 
         // Sort out card id mapping to feed to the clients.
         signalData[p.destColumnId] = util.toCardStackMap(destStack);
-
+        
       } else {  // DIFFERENT source and destination stacks (columns)
 
         var destStack         = util.normalizeCardStack(r.destStack),
@@ -210,9 +218,8 @@ module.exports = {
         // Reinsert the cardSlot
         destStack.splice(p.destPosition - 1, 0, [card]);
 
-        // Figure out the work to actually update the db.
-        jobs = util.fixCardPositions(sourceStack, originalSourceMap)
-          .concat(util.fixCardPositions(destStack, originalDestMap));
+        util.fixCardPositions2(sourceStack, originalSourceMap);
+        util.fixCardPositions2(destStack, originalDestMap);
 
         // Sort out card id mapping to feed to the clients.
         signalData[p.destColumnId]   = util.toCardStackMap(destStack);
@@ -221,18 +228,17 @@ module.exports = {
 
       signalData.animateCardIds = [p.cardId];
 
-      async.parallel(jobs, function(err, results) {
-        if (err) return res.serverError(err);
+      util.nativeSaveStacks(sourceStack, function () {
+        util.nativeSaveStacks(destStack, function (err) {
+          if (err) return res.serverError(err);
 
-        meta.releaseCardLock(boardId, card.id, true);
+          meta.releaseCardLock(boardId, card.id, true);
 
-        res.jsonx(signalData);
-
-        redis.boardMoveCards(boardId, signalData);
+          res.jsonx(signalData);
+          redis.boardMoveCards(boardId, signalData);
+        }); 
       });
-
     });
-
   },
 
   movePile: function(req, res) {
