@@ -9,50 +9,50 @@
             </a>
         </div>
         <div data-ng-show="pane === 'list'">
-          <ul class="form-fields">
-              <li>
-                  <label for="filter">
-                      Search Boards
-                  </label>
-                  <input name="filter" type="text" data-ng-model="query" placeholder="Search">
-              </li>
-          </ul>
-          <ul class="form-fields list--x--inline mbxl">
-              <li>
-                  <label for="type-normal" class="mls mrm">
-                      <input id="type-normal" type="radio" name="type" value="normal" data-ng-model="type">
-                      Show Active
-                  </label>
-              </li>
-              <li data-ng-show="archivedBoardsExist">
-                  <label for="type-archived" class="mls mrm">
-                      <input id="type-archived" type="radio" name="type" value="archived" data-ng-model="type"
+            <ul class="form-fields">
+                <li>
+                    <label for="filter">
+                        Search Boards
+                    </label>
+                    <input name="filter" type="text" data-ng-model="query" placeholder="Search">
+                </li>
+            </ul>
+            <ul class="form-fields list--x--inline mbxl">
+                <li>
+                    <label for="type-normal" class="mls mrm">
+                        <input id="type-normal" type="radio" name="type" value="normal" data-ng-model="type">
+                        Show Active
+                    </label>
+                </li>
+                <li data-ng-show="archivedBoardsExist">
+                    <label for="type-archived" class="mls mrm">
+                        <input id="type-archived" type="radio" name="type" value="archived" data-ng-model="type"
                         data-ng-show="archivedBoardsExist">
-                      Show Archived
-                  </label>
-              </li>
-              <li data-ng-show="user.admin && privateBoardsExist">
-                  <label for="type-private">
-                      <input id="type-private" type="radio" name="type" value="private" data-ng-model="type"
+                        Show Archived
+                    </label>
+                </li>
+                <li data-ng-show="user.admin && privateBoardsExist">
+                    <label for="type-private">
+                        <input id="type-private" type="radio" name="type" value="private" data-ng-model="type"
                         data-ng-show="user.admin && privateBoardsExist">
-                      Show Private
-                  </label>
-              </li>
-              <li>
-                  <label for="type-all" class="mls">
-                      <input id="type-all" type="radio" name="type" value="all" data-ng-model="type">
-                      Show All
-                  </label>
-              </li>
-          </ul>
-          <ul class="list--y--bg">
-            <li data-ng-repeat="b in boards | filter:query | filter:myFilter">
-              <boardlist-item board="b"></boardlist-item>
-            </li>
-          </ul>
+                        Show Private
+                    </label>
+                </li>
+                <li>
+                    <label for="type-all" class="mls">
+                        <input id="type-all" type="radio" name="type" value="all" data-ng-model="type">
+                        Show All
+                    </label>
+                </li>
+            </ul>
+            <ul class="list--y--bg">
+                <li data-ng-repeat="b in boards | filter:query | filter:myFilter">
+                    <boardlist-item board="b"></boardlist-item>
+                </li>
+            </ul>
         </div>
         <div data-ng-show="pane === 'new'">
-          <board-settings></board-settings>
+            <board-settings></board-settings>
         </div>
     </section>
 </div>

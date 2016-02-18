@@ -1,7 +1,7 @@
 <div class="nav" data-ng-class="{archived:board.archived}">
     <div class="tier">
         <a href="/boards" class="aside-left">
-            <svg class="icon-logo">
+            <svg class="icon icon--logo">
                 <desc>Logo</desc>
                 <use xlink:href="#lucidboard"></use>
             </svg>
@@ -29,7 +29,7 @@
               data-onbeforesave="checkBoardTitle($data)"
               >
                 <span data-ng-show="board.p_lock">
-                    <svg class="icon" fill="#ffffff">
+                    <svg class="icon mrm" fill="#ffffff">
                         <desc>Board is locked Icon</desc>
                         <use xlink:href="#lock"></use>
                     </svg>
@@ -42,7 +42,7 @@
               >
                 <h1 class="delta">
                     <span data-ng-show="board.p_lock">
-                      <svg class="icon" fill="#ffffff">
+                      <svg class="icon mrm" fill="#ffffff">
                           <desc>Board is locked Icon</desc>
                           <use xlink:href="#lock"></use>
                       </svg>
@@ -54,7 +54,7 @@
         <ul class="list--x--inline">
             <li class="nav-full" data-ng-show="board.votesEnabled">
                 <div>
-                    <svg class="aside-left icon-standard" fill="#ffffff">
+                    <svg class="aside-left icon icon--large mrm" fill="#ffffff">
                         <desc>Vote icon</desc>
                         <use xlink:href="#heart"></use>
                     </svg>
@@ -74,7 +74,7 @@
             <li data-ng-show="board.isFacilitator">
                 <a href="#" class="btn link--inverse" data-ng-click="view.tab.switch('settings', 'board')"
                   data-ng-class="{'btn--muted':view.tab.current === 'settings'}">
-                    <svg class="aside-left icon-standard" fill="#ffffff">
+                    <svg class="aside-left icon icon--large mrm" fill="#ffffff">
                         <desc>Board Settings Icon</desc>
                         <use xlink:href="#settings"></use>
                     </svg>

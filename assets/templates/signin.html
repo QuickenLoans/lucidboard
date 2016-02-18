@@ -2,49 +2,57 @@
     <form ng-submit="signin()" class="panel panel--middle">
         <div class="flag center mbxl" data-ng-show="signedOut">
             <div class="flag__media--success">
-                <svg class="icon-alert" fill="#fff">
+                <svg class="copy-inverse icon icon--large" fill="#fff">
                     <desc>Success Icon</desc>
                     <use xlink:href="#check-circle"></use>
                 </svg>
             </div>
+
             <div class="flag__body">
                 You are now signed out.
             </div>
         </div>
         <div class="flag center mbxl" data-ng-show="errorMessage">
             <div class="flag__media--alert">
-                <svg width="22px" height="21px" viewBox="0 0 22 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-                        <path d="M19.6642963,9.78862069 C18.6465185,7.16310345 16.1642963,5.14793103 13.0783704,4.50655172 C13.8687407,3.45 15.1791111,2.75551724 16.6672593,2.75551724 C19.085037,2.75551724 21.0442963,4.58034483 21.0442963,6.83137931 C21.0442963,7.99965517 20.5094815,9.04586207 19.6642963,9.78862069 L19.6642963,9.78862069 Z M11.2457778,2.90862069 L11.2457778,5.47137931 C15.4457778,5.63068966 18.8005926,8.84241379 18.8005926,12.7913793 C18.8005926,14.4410345 18.2087407,15.9582759 17.2228148,17.1824138 L19.048,20.1265517 L17.5317037,20.9424138 L15.9694815,18.4224138 C14.6020741,19.4865517 12.8428148,20.1286207 10.9220741,20.1286207 C9.0117037,20.1286207 7.26059259,19.4948276 5.89688889,18.4424138 L4.29318519,21.0265517 L2.77688889,20.2106897 L4.64059259,17.2065517 C3.64207407,15.9775862 3.04355556,14.4513793 3.04355556,12.7913793 C3.04355556,8.86862069 6.35318519,5.67482759 10.5131852,5.47551724 L10.5131852,2.90862069 C10.0887407,2.76724138 9.78059259,2.39827586 9.78059259,1.95344828 C9.78059259,1.38793103 10.2731852,0.93 10.8798519,0.93 C11.4865185,0.93 11.9798519,1.38862069 11.9798519,1.95344828 C11.9791111,2.39827586 11.670963,2.76724138 11.2457778,2.90862069 L11.2457778,2.90862069 Z M4.79318519,12.7913793 C4.79318519,15.9431034 7.53688889,18.4968966 10.9213333,18.4968966 C14.3057778,18.4968966 17.0494815,15.9431034 17.0494815,12.7913793 C17.0494815,9.64103448 14.305037,7.08655172 10.9213333,7.08655172 C7.53762963,7.08655172 4.79318519,9.64103448 4.79318519,12.7913793 L4.79318519,12.7913793 Z M12.7583704,14.0251724 L10.5591111,14.0251724 C10.1539259,14.0251724 9.82577778,13.7196552 9.82577778,13.3424138 L9.82577778,10.612069 C9.82577778,10.2348276 10.1539259,9.92931034 10.5591111,9.92931034 C10.9635556,9.92931034 11.2917037,10.2348276 11.2917037,10.612069 L11.2917037,12.6596552 L12.7576296,12.6596552 C13.1628148,12.6596552 13.490963,12.9651724 13.490963,13.3424138 C13.490963,13.7196552 13.1635556,14.0251724 12.7583704,14.0251724 L12.7583704,14.0251724 Z M2.28874074,9.78862069 C1.44281481,9.04517241 0.908,7.99965517 0.908,6.83137931 C0.908,4.58034483 2.868,2.75551724 5.28577778,2.75551724 C6.77318519,2.75551724 8.08281481,3.45 8.87466667,4.50655172 C5.78874074,5.14793103 3.30651852,7.16310345 2.28874074,9.78862069 L2.28874074,9.78862069 Z" id="Shape" fill="#FFFFFF" sketch:type="MSShapeGroup"></path>
-                    </g>
+                <svg class="copy-inverse icon icon--large" fill="#fff">
+                    <desc>Error Icon</desc>
+                    <use xlink:href="#exclamation"></use>
                 </svg>
             </div>
+
             <div class="flag__body">
-              {{errorMessage}}
+                {{errorMessage}}
             </div>
         </div>
-      <h3 class="heading-underline">Sign In</h3>
-      <ul class="form-fields" data-ng-show="signinStyle === 'userpass'">
-        <li>
-            <label for="username">Username</label>
-            <input type="text" data-ng-model="username" placeholder="Username" autofocus>
-        </li>
-        <li>
-            <label for="password">Password</label>
-            <input type="password" data-ng-model="password" placeholder="Password">
-        </li>
-        <li>
-            <input type="submit" class="btn" value="Sign In">
-        </li>
-      </ul>
-      <ul class="form-fields" data-ng-show="signinStyle === 'user'">
-        <li>
-            <label for="username">Username</label>
-            <input type="text" data-ng-model="username" placeholder="Username" autofocus>
-        </li>
-        <li>
-            <input type="submit" class="btn" value="Sign In">
-        </li>
-      </ul>
+
+        <h3 class="heading-underline">
+            Sign In
+        </h3>
+
+        <ul class="form-fields" data-ng-show="signinStyle === 'userpass'">
+            <li>
+                <label for="username">Username</label>
+                <input type="text" data-ng-model="username" placeholder="Username" autofocus>
+            </li>
+
+            <li>
+                <label for="password">Password</label>
+                <input type="password" data-ng-model="password" placeholder="Password">
+            </li>
+
+            <li>
+                <input type="submit" class="btn" value="Sign In">
+            </li>
+        </ul>
+
+        <ul class="form-fields" data-ng-show="signinStyle === 'user'">
+            <li>
+                <label for="username">Username</label>
+                <input type="text" data-ng-model="username" placeholder="Username" autofocus>
+            </li>
+            <li>
+                <input type="submit" class="btn" value="Sign In">
+            </li>
+        </ul>
     </form>
 </section>

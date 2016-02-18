@@ -22,9 +22,11 @@
     &.locked {
         background-color: $detroit;
     }
-    &:active {
-        cursor: grabbing;
-    }
+}
+
+// class gets applied to card while dragging by plugin
+.on-dragging {
+    cursor: grabbing;
 }
 
 // textarea gets added by plugin, todo: figure out how to add a class to textarea instead of this
@@ -54,12 +56,10 @@
 .card__menu__items {
     list-style-type: none;
     padding: 0;
-    margin-left: 0.5em;
     li {
         padding: 0.5em 0;
         a {
             display: inline-block;
-            padding: 0.5em;
         }
         &:last-child {
             border-bottom: none;
@@ -70,16 +70,6 @@
         padding: 0;
         margin-top: 0.5em;
         margin-left: 0.5em;
-    }
-}
-
-.card--locked {
-    padding: 1.5em;
-    .icon-standard {
-        width: 4em;
-        height: 4em;
-        display: block;
-        margin: 0 auto;
     }
 }
 
@@ -107,22 +97,21 @@
 }
 
 .brick {
-    border-left: 0.4em solid $brick;
+    border-left-color: $brick;
     &.swatch {
-        border: 0;
         background: $brick;
     }
 }
 
 .sea {
-    border-left: 0.4em solid $sea;
+    border-left-color: $sea;
     &.swatch {
         background: $sea;
     }
 }
 
 .ice {
-    border-left: 0.4em solid $ice;
+    border-left-color: $ice;
     &.swatch {
         background: $ice;
     }
@@ -131,7 +120,7 @@
 .default {
     border-left: 0.4em solid $storm;
     &.swatch {
-        border: 0.15em solid $white;
+        border: 0.15em solid $font-body-color;
         background: $storm;
     }
 }
@@ -139,7 +128,6 @@
 .gold-money {
     border-left: 0.4em solid $gold-money;
     &.swatch {
-        border: 0.15em solid $gold-money;
         background: $gold-money;
     }
 }
@@ -147,26 +135,7 @@
 .eggplant {
     border-left: 0.4em solid $eggplant;
     &.swatch {
-        border: 0.15em solid $eggplant;
         background: $eggplant;
-    }
-}
-
-.handle {
-    padding: 0.5em;
-    margin: 0;
-    font-style: normal;
-    color: $oxford;
-}
-
-.handle__link {
-    outline: none;
-    display: inline-block;
-    &:hover, &:active, &:focus {
-        color: $flamingo;
-        fill: $flamingo;
-        font-style: normal;
-        text-decoration: none;
     }
 }
 
