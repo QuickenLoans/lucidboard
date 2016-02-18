@@ -27,6 +27,9 @@
           $scope.board = board;
           $scope.view  = view;
           $scope.user  = user;
+          $scope.isDraggable = function (board) {
+            return board.locks.length === 0 && !board.locked
+          };
 
           $scope.isEditable = function(card) {
             // (!board.weHaveCardLocks || (card.locked && !card.lockedByAnother))

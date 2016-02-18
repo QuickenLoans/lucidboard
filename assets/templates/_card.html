@@ -1,6 +1,6 @@
 <div
      class="card slate-card {{card.color || 'default'}}"
-     data-ui-draggable="{{board.locks.length === 0 && !board.locked}}"
+     data-ui-draggable="isDraggable(board)"
      data-drag="card"
      data-drag-channel="card"
      data-drop-channel="card"
