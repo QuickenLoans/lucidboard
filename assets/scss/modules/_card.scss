@@ -16,6 +16,14 @@
     position: relative;
     transition: background-color 0.2s ease-in-out;
     width: 100%;
+    &.on-drag-hover { // for when a card is hovered on top an existing card
+        border: {
+            top: 0.15em dashed $storm;
+            right: 0.15em dashed $storm;
+            left: 0.4em soild $storm;
+            bottom: 0.15em dashed $storm;
+        }
+    }
     &:hover {
         background-color: darken($summit, 5%);
     }
@@ -30,15 +38,8 @@
 }
 
 // textarea gets added by plugin, todo: figure out how to add a class to textarea instead of this
-.card textarea, .card .cardcontent pre {
+.card textarea {
     padding: 0.5em;
-}
-
-// the original state of the card is a "pre" element, again this is not desirable and because of the plugin
-.card .cardcontent pre {
-    font-family: $font-body;
-    margin: 0;
-    border-bottom: 0.0625em solid $storm;
 }
 
 .card__menu {
@@ -79,7 +80,7 @@
     &.on-drag-hover {
         background-color: darken($summit, 10%);
         border-radius: 0.15em;
-        border: 0.0625em solid $storm;
+        border: 0.15em dashed $storm;
         height: 7em;
         margin-top: 1em;
         margin-bottom: 1em;
@@ -139,19 +140,11 @@
     }
 }
 
-.card-pile-panel {
+.card__pile {
     @include clearfix;
-    margin-top:  0.125em;
+
     background: $fiord;
-    font-size: 1.25em;
-    color: $white;
-    a {
-        color: $white;
-        &:hover, &:active, &:focus {
-            text-decoration: none;
-            outline: 0;
-        }
-    }
+    font-size: 1.2em;
     border-bottom-right-radius: 0.1875em;
     border-bottom-left-radius: 0.1875em;
     text-align: center;

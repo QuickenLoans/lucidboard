@@ -7,13 +7,13 @@ $font-heading: 'Nunito', sans-serif;
 $font-heading-weight: bold;
 $font-body: 'Open Sans', sans-serif;;
 
-%font__heading {
+.font--heading {
   font-family: $font-heading;
   font-weight: $font-heading-weight;
   line-height: $base-line-height;
 }
 
-%font__body {
+.font--body {
   font-family: $font-body;
   color: $font-body-color;
   font-size: $base-font-size;

@@ -50,7 +50,7 @@
 }
 
 .editable-wrap .editable-controls > input {
-    @extend %font__heading;
+    @extend .font--heading;
     font-size: $h4-size-large;
     padding: 0;
     outline: 0;

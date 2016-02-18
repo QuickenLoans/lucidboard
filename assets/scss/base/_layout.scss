@@ -9,7 +9,7 @@ $susy: (
 @include border-box-sizing;
 
 html, body {
-    @extend %font__body;
+    @extend .font--body;
     @include container;
     height: 100%;
 }

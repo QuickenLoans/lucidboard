@@ -21,13 +21,13 @@
              data-oncancel="cancel(card)"
              data-ng-disabled="true"
              >
-             <pre data-ng-show="card.content && board.p_seeContent">
+             <pre class="font--body mn pm underline underline--s underline--storm" data-ng-show="card.content && board.p_seeContent">
 {{card.content}}
             </pre>
-            <pre data-ng-show="card.content && !board.p_seeContent">
+            <pre class="font--body mn pm underline underline--s underline--storm" data-ng-show="card.content && !board.p_seeContent">
 {{card.content | obfuscated}}
             </pre>
-            <pre data-ng-show="!card.content">
+            <pre class="font--body mn pm underline underline--s underline--storm" data-ng-show="!card.content">
 Enter note...
             </pre>
         </div>
@@ -56,13 +56,15 @@ Enter note...
             </div>
         </div>
         <div class="card__menu" data-ng-show="view.cardMenu.current === card.id">
-            <ul class="card__menu__items mlm" role="menu">
+            <ul class="card__menu__items mlm mrm" role="menu">
                 <li data-ng-show="card.myVoteCount">
                     <a href="#" data-ng-click="unupvote(card)">Undo vote</a>
                 </li>
 
                 <li>
-                    Card Color
+                    <p class="underline">
+                        Card Color
+                    </p>
 
                     <ul class="list--x" role="menu">
                         <li>
@@ -92,10 +94,12 @@ Enter note...
                 </li>
 
                 <li data-ng-show="board.columns.length > 2 || column.position === 0">
-                    Move Card To
+                    <p class="underline">
+                        Move Card To
+                    </p>
 
                     <div data-ng-repeat="col in board.columns">
-                        <a role="menuitem" tabindex="1"
+                        <a class="mbm" role="menuitem" tabindex="1"
                           data-ng-show="col.title !== column.title && col.position !== 0"
                           data-ng-click="moveTo(card, col)" href="#">
                             <svg class="icon">
@@ -121,13 +125,15 @@ Enter note...
     </div>
     <div data-ng-show="!card.lockedByAnother && !isEditable(card)">
         <div class="cardcontent">
-            <pre data-ng-show="card.content && board.p_seeContent">
+            <pre class="font--body mn pm underline underline--s underline--storm" data-ng-show="card.content && board.p_seeContent">
 {{card.content}}
             </pre>
-            <pre data-ng-show="card.content && !board.p_seeContent">
+
+            <pre class="font--body mn pm underline underline--s underline--storm" data-ng-show="card.content && !board.p_seeContent">
 {{card.content | obfuscated}}
             </pre>
-            <pre data-ng-show="!card.content">
+
+            <pre class="font--body mn pm underline underline--s underline--storm" data-ng-show="!card.content">
 Empty
             </pre>
         </div>

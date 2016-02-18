@@ -10,6 +10,9 @@
 .hide {
     display: none;
 }
+.mn {
+    margin: 0;
+}
 
 .mtn {
     margin-top: 0;
@@ -80,12 +83,16 @@
 }
 
 // Branding classes
-.brand-underline {
+.underline {
     border-bottom: 0.1875em solid $oxford;
 }
 
-.underline  {
-    border-bottom: 0.2em solid $oxford;
+.underline--s {
+    border-bottom: 0.0625em solid;
+}
+
+.underline--storm  {
+    border-bottom-color: $storm;
 }
 
 .aside-right {
