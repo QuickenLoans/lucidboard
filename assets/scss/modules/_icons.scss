@@ -1,43 +1,35 @@
-// need to fix this whole file - what was i even doing - prototyping i guess..
-
-.icon-standard {
+.icon {
     display: inline-block;
-    width: 1.5em;
-    height: 1.5em;
-    margin-right: 0.5em;
+    width: 1em;
+    height: 1em;
     outline: 0;
     fill: currentColor;
-    vertical-align: middle;
 }
 
-//need to remove this margin top
-.icon {
-    width: 1em;
-    height: 1em;
-    outline: 0;
+.icon--large {
+    width: 1.5em;
+    height: 1.5em;
 }
 
-//need to remove this margin top
-.icon-small {
-    margin-top: 0.2em;
-    width: 1em;
-    height: 1em;
-    outline: 0;
-}
-
-.icon-logo {
+.icon--logo {
     width: 8em;
     height: 2em;
 }
 
-.icon-middle {
+.icon--card-locking {
+    width: 8em;
+    height: 5em;
+}
+
+.icon--middle {
     width: 10em;
     height: 7em;
 }
 
-.icon-alert {
-    display: inline-block;
-    width: 1.5em;
-    height: 1.5em;
-    outline: 0;
+.icon--has-hover-fiord {
+    transition: color 0.5s ease-in-out;
+    &:hover {
+        color: $fiord;
+        fill: $fiord;
+    }
 }

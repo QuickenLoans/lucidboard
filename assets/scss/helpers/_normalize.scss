@@ -519,3 +519,8 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
+
+// Remove margin-top browser default from p tags
+p {
+    margin-top: 0;
+}

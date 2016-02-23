@@ -1,16 +1,20 @@
-<a href="/boards/{{board.slug}}"
-  data-ng-class="{'list--y--bg__item-muted':board.archived,'list--y--bg__item-dark':board.private}"
-  >
-  <span data-ng-show="board.p_lock">
-      <svg class="icon" fill="#ffffff">
-          <desc>Board is locked Icon</desc>
-          <use xlink:href="#lock"></use>
-      </svg>
-  </span>
-  {{board.title}}
-  <small class="font--small-muted">{{board.createdAt | formatDate}}</small>
-  <small class="aside-right">{{board.creatorUsername}}</small>
+<a href="/boards/{{board.slug}}" data-ng-class="{'list--y--bg__item-muted':board.archived,'list--y--bg__item-dark':board.private}">
+    <svg class="icon" data-ng-show="board.p_lock" fill="#ffffff">
+        <desc>Board is locked Icon</desc>
+        <use xlink:href="#lock"></use>
+    </svg>
+
+    {{board.title}}
+
+    <small class="font--small-muted">
+        {{board.createdAt | formatDate}}
+    </small>
+
+    <small class="aside-right">
+        {{board.creatorUsername}}
+    </small>
 </a>
+
 <a href="" data-ng-click="confirmDelete(b)" data-ng-show="deletable">
-  Delete Board
+    Delete Board
 </a>

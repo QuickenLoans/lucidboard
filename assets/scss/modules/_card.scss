@@ -2,81 +2,27 @@
 // remove the plugin styles
 .card {
     @include clearfix;
-    cursor: grab;
-    border-radius: 0.15em;
-    font-weight: bold;
-    width: 100%;
-    position: relative;
-    textarea {
-        margin-left: 0.5em;
-        margin-top: 0.5em;
-    }
-    .attached-cards {
-        float: left;
-        background-color: $font-body-color;
-        color: white;
-        border-radius: 0.15em;
-        font-weight: bold;
-        font-size: 0.5em;
-        padding: 0.1875em;
-        width: 2em;
-        text-align: center;
-    }
-    .cardcontent pre {
-        font-family: $font-body;
-        margin: 0;
-        padding: 1em;
-        font-style: normal;
-        border-bottom: 0.0625em solid $storm;
-    }
-    &:active {
-        cursor: grabbing;
-    }
-}
 
-.card--locked {
-    padding: 1.5em;
-    .icon-standard {
-        width: 4em;
-        height: 4em;
-        display: block;
-        margin: 0 auto;
-    }
-}
-
-.card-remove {
-    position: absolute;
-    bottom: 0.3125em;
-    right: 0.3125em;
-}
-
-.card.on-drag-hover {
-    border: 0.125em dashed $alto;
-}
-
-.cardjunction {
-     height: 1em;
-     transition: all 0.2s ease-in-out;
-     &.on-drag-hover {
-        height: 7em;
-        border-radius: 0.15em;
-        border: 0.125em dashed $storm;
-        margin-top: 0.375em;
-        margin-bottom: 0.375em;
-     }
-     .active {
-        background-color: $summit;
-     }
-}
-
-.slate-card {
     background-color: $summit;
-    transition: background-color 0.2s ease-in-out;
     border: {
         top: 0.0625em solid $storm;
         right: 0.0625em solid $storm;
         left: 0.4em solid $storm;
         bottom: 0.0625em solid $storm;
+    }
+    border-radius: 0.15em;
+    cursor: grab;
+    font-weight: bold;
+    position: relative;
+    transition: background-color 0.2s ease-in-out;
+    width: 100%;
+    &.on-drag-hover { // for when a card is hovered on top an existing card
+        border: {
+            top: 0.15em dashed $storm;
+            right: 0.15em dashed $storm;
+            left: 0.4em soild $storm;
+            bottom: 0.15em dashed $storm;
+        }
     }
     &:hover {
         background-color: darken($summit, 5%);
@@ -86,26 +32,35 @@
     }
 }
 
-.card-menu {
-    background-color: darken($summit, 5%);
-    font-size: 0.8em;
-    @include span(12 of 12 omega);
+// class gets applied to card while dragging by plugin
+.on-dragging {
+    cursor: grabbing;
+}
+
+// textarea gets added by plugin, todo: figure out how to add a class to textarea instead of this
+.card textarea {
+    padding: 0.5em;
+}
+
+.card__menu {
     @include clearfix;
+    @include span(12 of 12 omega);
+
+    background-color: darken($summit, 5%);
+    border-top: 0.2em solid $storm;
+    font-size: 0.8em;
     &:hover {
         cursor: default;
     }
 }
 
-.card-menu__items {
+.card__menu__items {
     list-style-type: none;
     padding: 0;
-    margin-left: 0.5em;
     li {
         padding: 0.5em 0;
-        border-bottom: 0.0625em solid $cloudy-day;
         a {
             display: inline-block;
-            padding: 0.5em;
         }
         &:last-child {
             border-bottom: none;
@@ -119,6 +74,22 @@
     }
 }
 
+.cardjunction {
+    height: 1em;
+    transition: all 0.2s ease-in-out;
+    &.on-drag-hover {
+        background-color: darken($summit, 10%);
+        border-radius: 0.15em;
+        border: 0.15em dashed $storm;
+        height: 7em;
+        margin-top: 1em;
+        margin-bottom: 1em;
+    }
+    .active {
+        background-color: $summit;
+    }
+}
+
 // card style colors
 .swatch {
     height: 1.5em;
@@ -127,22 +98,21 @@
 }
 
 .brick {
-    border-left: 0.4em solid $brick;
+    border-left-color: $brick;
     &.swatch {
-        border: 0;
         background: $brick;
     }
 }
 
 .sea {
-    border-left: 0.4em solid $sea;
+    border-left-color: $sea;
     &.swatch {
         background: $sea;
     }
 }
 
 .ice {
-    border-left: 0.4em solid $ice;
+    border-left-color: $ice;
     &.swatch {
         background: $ice;
     }
@@ -151,7 +121,7 @@
 .default {
     border-left: 0.4em solid $storm;
     &.swatch {
-        border: 0.15em solid $white;
+        border: 0.15em solid $font-body-color;
         background: $storm;
     }
 }
@@ -159,7 +129,6 @@
 .gold-money {
     border-left: 0.4em solid $gold-money;
     &.swatch {
-        border: 0.15em solid $gold-money;
         background: $gold-money;
     }
 }
@@ -167,42 +136,15 @@
 .eggplant {
     border-left: 0.4em solid $eggplant;
     &.swatch {
-        border: 0.15em solid $eggplant;
         background: $eggplant;
     }
 }
 
-.handle {
-    padding: 0.5em;
-    margin: 0;
-    font-style: normal;
-    color: $oxford;
-}
-
-.handle__link {
-    outline: none;
-    display: inline-block;
-    &:hover, &:active, &:focus {
-        color: $flamingo;
-        fill: $flamingo;
-        font-style: normal;
-        text-decoration: none;
-    }
-}
-
-.card-pile-panel {
+.card__pile {
     @include clearfix;
-    margin-top:  0.125em;
+
     background: $fiord;
-    font-size: 1.25em;
-    color: $white;
-    a {
-        color: $white;
-        &:hover, &:active, &:focus {
-            text-decoration: none;
-            outline: 0;
-        }
-    }
+    font-size: 1.2em;
     border-bottom-right-radius: 0.1875em;
     border-bottom-left-radius: 0.1875em;
     text-align: center;

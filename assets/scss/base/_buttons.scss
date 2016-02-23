@@ -43,3 +43,11 @@
         color: $flamingo;
     }
 }
+
+.btn--oxford {
+    background-color: $oxford;
+
+    &:hover, &:active, &:focus {
+        background: darken($oxford, 5%);
+    }
+}

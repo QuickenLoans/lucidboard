@@ -1,6 +1,6 @@
 // Heading sizes are increased by 0.25em at 60em breakpoint
 h1, h2, h3, h4, h5, h6 {
-    @extend %font__heading;
+    @extend .font--heading;
     color: $font-body-color;
     margin-top: 0;
     margin-bottom: 0.5em;
@@ -46,10 +46,4 @@ h6, .zeta {
     @media (min-width: 60em) {
         font-size: $h6-size-large;
     }
-}
-
-// Little bit of branding style
-.heading-underline  {
-    border-bottom: 0.2em solid $oxford;
-    @include clearfix;
 }

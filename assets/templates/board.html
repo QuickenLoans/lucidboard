@@ -2,7 +2,7 @@
     <div class="tier">
         <div class="flag center hide">
             <div class="flag__media--alert">
-                <svg class="icon-alert" fill="#ffffff">
+                <svg class="icon icon--large" fill="#ffffff">
                     <desc>Board Clock Timer Icon</desc>
                     <use xlink:href="#clock"></use>
                 </svg>
@@ -24,7 +24,7 @@
               data-ng-repeat-start="column in board.columns"
               data-ng-show="getColumnViewState(column.id, column.position, columnViewSelected)">
                 <ul class="form-fields--blank">
-                    <li class="brand-underline mbm">
+                    <li class="underline mbm">
                         <h4 class="column__title mbn delta overflow-ellipsis"
                             data-ng-if="board.isFacilitator && column.position !== 0"
                             data-editable-text="column.title"
