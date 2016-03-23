@@ -1,4 +1,5 @@
 module.exports.models = {
-  connection: 'redis',
-  migrate:    'drop'
+  // connection: 'redis',
+  // // migrate:    'drop'
+  // migrate:    'alter'
 };

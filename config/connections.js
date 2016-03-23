@@ -1,4 +1,13 @@
 module.exports.connections = {
+  mysql: {
+    module:   'sails-mysql',
+    host:     'localhost',
+    port:     3306,
+    username: 'lucidboard',
+    password: 'coeudoecudocudcoud',
+    database: 'lucidboard_dev',
+    charset:  'utf8'
+  },
   redis: {
     adapter: 'sails-redis',
     port: 6379,

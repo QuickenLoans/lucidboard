@@ -33,18 +33,36 @@ module.exports.bootstrap = function(cb) {
   //     });
   //   });
   // });
+  //
+  return cb();
 
+  var date = new Date();
+  // console.log('NOW: ' + date);
   // Remove this later
   // Add a shortid to all pages lacking one
   shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ,.');
   Board.find({}).exec(function(err, boards) {
     if (err) throw err;
+    // console.log(boards[0]);
+    // process.exit();
     async.parallel(boards.reduce(function(memo, b) {
-      if (b.shortid) return;
-      memo.push(function(_cb) {
-        console.log('.');
-        Board.update({id: b.id}, {shortid: shortid.generate()}, _cb);
-      });
+      var boardDate = new Date(b.createdAt);
+      // console.log('kk', boardDate, date);
+      if (boardDate < date) {
+        memo.push(function(_cb) {
+          console.log('trying..', _cb);
+          Board.destroy({id: b.id}).exec(function(err, boards) {
+            if (err) throw err;
+            console.log('done');
+            _cb();
+          });
+        });
+        console.log("deleting " + b.id);
+      }
+      // memo.push(function(_cb) {
+      //   console.log('.');
+      //   Board.update({id: b.id}, {shortid: shortid.generate()}, _cb);
+      // });
       return memo;
     }, []) || [], function(err) {
       if (err) throw err;
