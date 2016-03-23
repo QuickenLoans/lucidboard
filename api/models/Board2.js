@@ -13,7 +13,7 @@ var meta       = require('../services/meta'),
     titleRegex = /^.{1,50}$/;
 
 module.exports = {
-  connection: 'redis',
+  connection: 'mysql',
 
   schema: true,
 

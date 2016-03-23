@@ -12,7 +12,7 @@ var
   usernameRegex = /^[a-zA-Z0-9_]{2,20}$/;
 
 module.exports = {
-  connection: 'redis',
+  connection: 'mysql',
 
   schema: true,
 

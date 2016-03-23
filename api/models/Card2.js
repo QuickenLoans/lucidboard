@@ -9,7 +9,7 @@
 var _ = require('underscore');
 
 module.exports = {
-  connection: 'redis',
+  connection: 'mysql',
 
   schema: true,
 
