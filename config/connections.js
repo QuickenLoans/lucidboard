@@ -3,7 +3,7 @@ module.exports.connections = {
     module:   'sails-mysql',
     host:     'localhost',
     port:     3306,
-    username: 'lucidboard',
+    user: 'lucidboard',
     password: 'coeudoecudocudcoud',
     database: 'lucidboard_dev',
     charset:  'utf8'

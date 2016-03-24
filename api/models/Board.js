@@ -146,17 +146,84 @@ module.exports = {
   },
 
   // Load the board by shortid along with all child objects.
+  // loadFullByShortid: function(shortid, _cb) {
+  //   shortid = util.fixShortid(shortid);
+  //   async.auto({
+  //     board: function(cb) {
+  //       Board.findOneByShortid(shortid).populate('columns').exec(cb);
+  //     },
+  //     cards: ['board', function(cb, r) {
+  //       if (!r.board) {
+  //         r.board = false;
+  //         return cb('Board not found');
+  //       }
+  //       Card.find({column: _.pluck(r.board.columns, 'id')}).exec(cb);
+  //     }],
+  //     votes: ['cards', function(cb, r) {
+  //       Vote.find({card: _.pluck(r.cards, 'id')}).exec(cb);
+  //     }],
+  //     mapCards: ['cards', function(cb, r) {
+  //       var i, board = r.board;
+  //
+  //       for (i=0; i<board.columns.length; i++) {
+  //         r.cards.forEach(function(card) {
+  //           if (card.column === board.columns[i].id) {
+  //             var c = card.toObject(); c.votes = [];  // wtf, mate
+  //             board.columns[i].cards.push(c);
+  //           }
+  //         });
+  //       }
+  //
+  //       cb(null, board);
+  //     }],
+  //     mapVotes: ['votes', 'mapCards', function(cb, r) {
+  //       r.votes.forEach(function(vote) {
+  //         for (var i=0; i<r.board.columns.length; i++) {
+  //           for (var j=0; j<r.board.columns[i].cards.length; j++) {
+  //             if (r.board.columns[i].cards[j].id === vote.card) {
+  //               r.board.columns[i].cards[j].votes.push(vote.toObject());
+  //             }
+  //           }
+  //         }
+  //       });
+  //       cb(null, r.board);
+  //     }],
+  //     final: ['mapVotes', function(cb, r) {
+  //       r.mapVotes.columns.forEach(function(col) {
+  //         col.cards.forEach(function(card) {
+  //           card.locked = meta.cardLockedByWhichUsername(r.board.id, card.id);
+  //         });
+  //       });
+  //       cb(null, r.mapVotes);
+  //     }]
+  //   }, function(err, r) {
+  //     if (err === 'Board not found') return _cb(null, false);
+  //     if (err)                       return _cb(err);
+  //     if (r.board === false)         return _cb(null, false);
+  //
+  //     _cb(null, r.final);
+  //   });
+  // },
+
   loadFullByShortid: function(shortid, _cb) {
     shortid = util.fixShortid(shortid);
     async.auto({
-      board: function(cb) {
-        Board.findOneByShortid(shortid).populate('columns').exec(cb);
+      simpleBoard: function(cb) {
+        Board.findOneByShortid(shortid).exec(cb);
       },
-      cards: ['board', function(cb, r) {
-        if (!r.board) {
+      board: ['simpleBoard', function(cb, r) {  // add the columns...
+        if (!r.simpleBoard) {
           r.board = false;
           return cb('Board not found');
         }
+        Column.find({board: r.simpleBoard.id}).exec(function(err, columns) {
+          if (err) return cb(err);
+          console.log('got ', columns);
+          r.simpleBoard.columns = columns;
+          cb(null, r.simpleBoard);
+        });
+      }],
+      cards: ['board', function(cb, r) {
         Card.find({column: _.pluck(r.board.columns, 'id')}).exec(cb);
       }],
       votes: ['cards', function(cb, r) {

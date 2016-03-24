@@ -27,12 +27,12 @@ module.exports = {
       defaultsTo: false
     },
 
-    creator: { model: 'user' },
+    creator: { model: 'user2' },
 
-    column: { model: 'column' },
+    column: { model: 'column2' },
 
     votes: {
-      collection: 'vote',
+      collection: 'vote2',
       via:        'card'
     },
 

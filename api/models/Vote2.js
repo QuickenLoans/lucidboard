@@ -12,8 +12,8 @@ module.exports = {
   schema: true,
 
   attributes: {
-    user: { model: 'user' },
-    card: { model: 'card' },
+    user: { model: 'user2' },
+    card: { model: 'card2' },
 
     toJSON: function() {
       return {

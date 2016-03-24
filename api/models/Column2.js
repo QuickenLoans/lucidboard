@@ -26,10 +26,10 @@ module.exports = {
 
     position: 'integer',
 
-    board: { model: 'board' },
+    board: { model: 'board2' },
 
     cards: {
-      collection: 'card',
+      collection: 'card2',
       via:        'column'
     },
 

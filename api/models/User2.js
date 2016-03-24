@@ -45,12 +45,12 @@ module.exports = {
     // },
 
     boards: {
-      collection: 'board',
+      collection: 'board2',
       via:        'creator'
     },
 
     cards: {
-      collection: 'card',
+      collection: 'card2',
       via:        'creator'
     },
 

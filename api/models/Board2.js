@@ -39,11 +39,11 @@ module.exports = {
     },
 
     columns: {
-      collection: 'column',
+      collection: 'column2',
       via:        'board'
     },
 
-    creator: { model: 'user' },
+    creator: { model: 'user2' },
 
     timerLength: {
       type:       'integer',
