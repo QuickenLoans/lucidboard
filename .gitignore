@@ -79,7 +79,7 @@ bower_components
 # tasks and adapters.
 ################################################
 .tmp
-dump.rdb
+dump.rdb*
 
 
 

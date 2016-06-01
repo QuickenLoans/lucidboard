@@ -11,7 +11,7 @@ var _ = require('underscore');
 var titleRegex = /^.{1,25}$/;
 
 module.exports = {
-  connection: 'redis',
+  connection: 'mysql',
 
   schema: true,
 
