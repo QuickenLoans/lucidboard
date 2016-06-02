@@ -9,7 +9,7 @@
 var
   md5           = require('MD5'),
   // crypto        = require('crypto'),
-  usernameRegex = /^[a-zA-Z0-9_]{2,20}$/;
+  usernameRegex = /^[a-zA-Z0-9_-]{2,20}$/;
 
 module.exports = {
   connection: 'mysql',

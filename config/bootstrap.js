@@ -28,6 +28,8 @@ module.exports.bootstrap = function(cb) {
 
   var imported = 0;
 
+
+
   // User.find({}).exec(function(err, users) {
   //   if (err) throw err;
   //   console.log('Found ' + users.length + ' users.');
@@ -50,7 +52,7 @@ module.exports.bootstrap = function(cb) {
   //
   // Board.find({}).exec(function(err, boards) {
   //   if (err) throw err;
-  //   console.log('Found ' + boards.length + ' records.');
+  //   console.log('Found ' + boards.length + ' boards.');
   //   boards.forEach(function(b) {
   //     Board2.create(b, function(err, board) {
   //       if (err) {
@@ -67,7 +69,7 @@ module.exports.bootstrap = function(cb) {
   //
   // Column.find({}).exec(function(err, columns) {
   //   if (err) throw err;
-  //   console.log('Found ' + columns.length + ' records.');
+  //   console.log('Found ' + columns.length + ' columns.');
   //   columns.forEach(function(c) {
   //     Column2.create(c, function(err, column) {
   //       if (err) {
@@ -84,7 +86,7 @@ module.exports.bootstrap = function(cb) {
   //
   // Card.find({}).exec(function(err, cards) {
   //   if (err) throw err;
-  //   console.log('Found ' + cards.length + ' records.');
+  //   console.log('Found ' + cards.length + ' cards.');
   //   cards.forEach(function(c) {
   //     Card2.create(c, function(err, card) {
   //       if (err) {
@@ -101,7 +103,7 @@ module.exports.bootstrap = function(cb) {
   //
   // Vote.find({}).exec(function(err, votes) {
   //   if (err) throw err;
-  //   console.log('Found ' + votes.length + ' records.');
+  //   console.log('Found ' + votes.length + ' votes.');
   //   votes.forEach(function(v) {
   //     Vote2.create(v, function(err, vote) {
   //       if (err) {
