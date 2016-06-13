@@ -218,7 +218,6 @@ module.exports = {
         }
         Column.find({board: r.simpleBoard.id}).exec(function(err, columns) {
           if (err) return cb(err);
-          console.log('got ', columns);
           r.simpleBoard.columns = columns;
           cb(null, r.simpleBoard);
         });

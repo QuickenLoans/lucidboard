@@ -99,6 +99,11 @@
                         Sort by Votes
                     </a>
                 </li>
+                <li data-ng-show="board.isFacilitator">
+                    <a href="#" data-ng-click="obliterateCards();">
+                        Obliterate All Cards
+                    </a>
+                </li>
                 <li>
                     <a href="/boards/{{board.slug}}/export/csv"
                       target="_self"

@@ -54,6 +54,8 @@
         board.combineCards(info);
       }).event('board:flipCard:' + board.id, function(cardId) {
         board.flipCard(cardId);
+      }).event('board:obliterateCards:' + board.id, function(junk) {
+        board.obliterateCards();
       }).hook($scope);
 
       $scope.board = board;

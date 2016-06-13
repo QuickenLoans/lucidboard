@@ -553,6 +553,13 @@
           }.bind(this));
         },
 
+        obliterateCards: function() {
+          for (var i=0; i<this.columns.length; i++) {
+            this.columns[i].cardSlots = [];
+          }
+          countColumnCards();
+        },
+
         // Because card operations that make changes above this card can cause
         // positions to change, this function will determine if the given cardId
         // occurs above any cards which are locked by this user.

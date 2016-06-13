@@ -122,6 +122,12 @@ module.exports.routes = {
     action:     'sortByVotes'
   },
 
+  // Board: Obliterate all the cards
+  'POST /api/boards/:id/obliterate-cards': {
+    controller: 'BoardController',
+    action:     'obliterateCards'
+  },
+
   // Board: Pause timer
   'POST /api/boards/:id/timer-pause': {
     controller: 'BoardController',

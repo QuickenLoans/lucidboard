@@ -40,6 +40,7 @@ module.exports = {
   boardCombineCards: function(boardId, info, r)   { publish('board:combineCards:' + boardId, info, r); },
   boardCombinePiles: function(boardId, info, r)   { publish('board:combinePiles:' + boardId, info, r); },
   boardFlipCard:     function(boardId, cardId, r) { publish('board:flipCard:' + boardId, cardId, r); },
+  boardObliterateCards: function(boardId, r)      { publish('board:obliterateCards:' + boardId, true, r); },
 
   columnCreated:     function(column, r)          { publish('column:create:' + column.board, column, r); },
   columnUpdated:     function(column, r)          { publish('column:update:' + column.board, column, r); },

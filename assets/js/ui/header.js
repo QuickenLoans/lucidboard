@@ -27,6 +27,15 @@
         api.boardSortByVotes(board.id);
       };
 
+      $scope.obliterateCards = function() {
+        var str1 = "Are you *sure* you want to irreversibly delete all cards on this board?",
+            str2 = "Are you really, really, absolutely sure you want to do that?";
+
+        if (confirm(str1) && confirm(str2)) {
+          api.boardObliterateCards(board.id);
+        }
+      };
+
       $scope.goFullScreen = function() {
         var element = document.documentElement;
         if (element.requestFullscreen) {

@@ -671,6 +671,49 @@ module.exports = {
     });
   },
 
+  obliterateCards: function(req, res) {
+    var boardId = parseInt(req.param('id')),
+        user    = req.user;
+
+    if (!boardId) return res.badRequest();
+
+    async.auto({
+      board: function(cb) { Board.findOneById(boardId).exec(cb); },
+      columns: ['board', function(cb, r) {
+        Column.find({board: r.board.id}).sort({position: 'asc'}).exec(cb);
+      }],
+      cards: ['columns', function(cb, r) {
+        async.parallel(r.columns.map(function(col) {
+          return function(_cb) {
+            Card.find({column: col.id}).sort({position: 'asc'}).exec(_cb);
+          };
+        }), cb);
+      }]
+    }, function(err, r) {
+      if (err)                    return res.serverError(err);
+      if (!r.board || !r.columns) return res.badRequest();
+
+      if (r.board.creator !== user.id && !user.admin) {
+        return res.forbidden();
+      }
+
+      var cards = _.flatten(r.cards),
+          jobs  = [];
+
+      cards.forEach(function(card) {
+        jobs.push(function(cb) { card.destroy(cb); });
+      });
+
+      async.parallel(jobs, function(err, r) {
+        if (err) return err.serverError(err);
+
+        res.jsonx(true);
+
+        if (jobs.length) redis.boardObliterateCards(boardId);
+      });
+    });
+  },
+
   config: function(req, res) {
     res.jsonx(config.all());
   }
