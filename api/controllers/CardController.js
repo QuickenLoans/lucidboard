@@ -90,6 +90,10 @@ module.exports = {
       Card.update(criteria, bits).exec(function(err, card) {
         if (err) return res.serverError(err);
 
+        if (!card[0]) {
+          return res.serverError("No card found for criteria: id: " + cardId
+            + ", column: " + r.column.id);
+        }
         card[0].populateVotes(function(err, card) {
           if (err) return res.serverError(err);
 
